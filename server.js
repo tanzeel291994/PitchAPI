@@ -9,7 +9,7 @@ const db = require('./config/db');
 MongoClient.connect(db.url, (err, db) => {
  //  uri_decode_auth: true ;
   if (err) return console.log(err)
-  require('./app/routes')(app, db); 
+  require('./routes')(app, db); 
 	app.listen(port, () => {
     console.log('We are live on ' + port);
   });
