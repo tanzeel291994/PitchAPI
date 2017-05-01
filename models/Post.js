@@ -1,24 +1,17 @@
 var mongoose = require('mongoose')
+var mongoosePaginate = require('mongoose-paginate');
 var postSchema = mongoose.Schema({
-  post_text: String,
-  likes: {
-    type: Number,
-    default: 0
-  },
-  dislikes: {
-    type: Number,
-    default: 0
-  },
-  user: {
+  post_txt: String,
+  likes:[mongoose.Schema.Types.ObjectId],
+  dislikes:[mongoose.Schema.Types.ObjectId],
+  user_id: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true
   },
-  views: {
-    type: Number,
-    default: 0
-  },
-	created_at: {
+  views: [mongoose.Schema.Types.ObjectId],
+  created_at: {
     type: Date,
     default: Date.now
   }
-})
-module.exports = mongoose.model('Post', postSchema)
+});
+postSchema.plugin(mongoosePaginate);
+module.exports = mongoose.model('Post', postSchema);
