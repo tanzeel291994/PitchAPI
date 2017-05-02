@@ -7,8 +7,6 @@ module.exports = function(app, db) {
 
 //creates a new post
 app.post('/post', (req, res) => { 
-  // const post = {user_id: req.body.user_id,likes:[],dislikes:[],views:[],
-   //post_txt:req.body.post_txt,created_at:new Date()};
     var post = new Post({
 	  post_txt:req.body.post_txt,
       user_id: new ObjectId(req.body.user_id)
@@ -18,13 +16,6 @@ app.post('/post', (req, res) => {
       if (err || ! post) return res.send(err, 500);
 		return res.send(post);
     });
-/*	db.collection('posts').insert(post, (err, result) => {
-      if (err) { 
-        res.send({'error': 'An error has occurred' }); 
-      } else {
-        res.send(result.ops[0]);
-      }
-    });*/
 });
 
 //gets new ideas
@@ -38,41 +29,35 @@ app.get('/new-ideas/:page', (req, res) => {
 //like a post
 app.put('/like/:id', (req, res) => {
     const id = req.params.id;
-    const details = { '_id': new ObjectId(id) };
+    const query = { '_id': new ObjectId(id) };
     const post = { user_id: req.body.user_id };
-    db.collection('posts').update(details, {$push: {likes:post.user_id}}, (err, result) => {
-      if (err) {
-          res.send({'error':'An error has occurred'});
-      } else {
-          res.send({'status':'success'});
-      } 
-    });
+    Post.update(query, { $push: { likes: post.user_id }},{},function(err)
+	{
+		if (err) return res.send(err, 500);
+		return res.send({'status':200});	
+	});
   });
 //dislike a post
 app.put('/dislike/:id', (req, res) => {
     const id = req.params.id;
-    const details = { '_id': new ObjectId(id) };
+    const query = { '_id': new ObjectId(id) };
     const post = { user_id: req.body.user_id };
-    db.collection('posts').update(details, {$push: {dislikes:post.user_id}}, (err, result) => {
-      if (err) {
-          res.send({'error':'An error has occurred'});
-      } else {
-          res.send({'status':'success'});
-      } 
-    });
+    Post.update(query, { $push: { dislikes: post.user_id }},{},function(err)
+	{
+		if (err) return res.send(err, 500);
+		return res.send({'status':200});	
+	});
   });
  //view a post
- app.put('/view/:id', (req, res) => {
+app.put('/view/:id', (req, res) => {
     const id = req.params.id;
-    const details = { '_id': new ObjectId(id) };
+    const query = { '_id': new ObjectId(id) };
     const post = { user_id: req.body.user_id };
-    db.collection('posts').update(details, {$push: {views:post.user_id}}, (err, result) => {
-      if (err) {
-          res.send({'error':'An error has occurred'});
-      } else {
-          res.send({'status':'success'});
-      } 
-    });
+    Post.update(query, { $push: { views: post.user_id }},{},function(err)
+	{
+		if (err) return res.send(err, 500);
+		return res.send({'status':200});	
+	});
   });
 	
 };
