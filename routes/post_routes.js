@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 var Post = require('../models/Post');
 
-module.exports = function(app, db) {
+module.exports = function(app) {
 
 //creates a new post
 app.post('/post', (req, res) => { 

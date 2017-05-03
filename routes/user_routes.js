@@ -1,7 +1,7 @@
 var ObjectId = require('mongodb').ObjectID;
 var User = require('../models/User');
 
-module.exports = function(app, db) {
+module.exports = function(app) {
 
 //finds user through email id	
 app.post('/sign_in', (req, res) => { 
