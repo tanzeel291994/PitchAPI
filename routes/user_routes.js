@@ -23,5 +23,4 @@ app.post('/sign_up', (req, res) => {
 		return res.send(user);
     });
 });
-
 };

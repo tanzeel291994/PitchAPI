@@ -11,7 +11,6 @@ app.post('/post', (req, res) => {
 	  post_txt:req.body.post_txt,
       user_id: new ObjectId(req.body.user_id)
     });
-	 //console.log(post);
 	post.save(function (err, post) {
       if (err || ! post) return res.send(err, 500);
 		return res.send(post);
@@ -21,8 +20,24 @@ app.post('/post', (req, res) => {
 //gets new ideas
 app.get('/new-ideas/:page', (req, res) => {
     const page = req.params.page;
-	Post.paginate({}, { page: page, limit: 2 }, function(err, result) {
-		if (err) return res.send(err, 500);
+	Post.paginate({}, { page: page, limit: 2 ,sort:{created_at:-1}}, function(err, result) {
+		if (err) return res.status(500).send(err);
+		return res.send(result);
+	});
+});	
+//gets popular ideas
+app.get('/popular-ideas/:page', (req, res) => {
+    const page = req.params.page;
+	Post.paginate({$where:'this.likes.length > this.dislikes.length'}, { page: page, limit: 2 }, function(err, result) {
+		if (err) return res.status(500).send(err);
+		return res.send(result);
+	});
+});	
+//gets ignored ideas
+app.get('/ignored-ideas/:page', (req, res) => {
+    const page = req.params.page;
+	Post.paginate({$where:'this.views.length > this.likes.length+this.dislikes.length'},{ page: page, limit: 2 }, function(err, result) {
+		if (err) return res.status(500).send(err);
 		return res.send(result);
 	});
 });	
@@ -58,6 +73,5 @@ app.put('/view/:id', (req, res) => {
 		if (err) return res.send(err, 500);
 		return res.send({'status':200});	
 	});
-  });
-	
+  });	
 };
