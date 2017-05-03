@@ -20,6 +20,7 @@ app.post('/post', (req, res) => {
 //gets new ideas
 app.get('/new-ideas/:page', (req, res) => {
     const page = req.params.page;
+	console.log(req.params.page);
 	Post.paginate({}, { page: page, limit: 2 ,sort:{created_at:-1}}, function(err, result) {
 		if (err) return res.status(500).send(err);
 		return res.send(result);
