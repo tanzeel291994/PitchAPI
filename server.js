@@ -25,9 +25,6 @@ mongoose.connect(db.url, {
 		console.log(error);
 	} else {
 		require('./routes')(app);
-		/*app.listen(port, () => {
-			console.log('We are live on ' + port);
-		});*/
 	}
 
 });
