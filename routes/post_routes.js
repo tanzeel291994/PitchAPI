@@ -26,6 +26,7 @@ app.get('/new-ideas/:page', (req, res) => {
 		return res.send(result);
 	});
 });	
+
 //gets popular ideas
 app.get('/popular-ideas/:page', (req, res) => {
     const page = req.params.page;
