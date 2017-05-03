@@ -28,7 +28,14 @@ mongoose.connect(db.url, {
 	}
 
 });
-
+app.get('/new-ideas/:page', (req, res) => {
+    const page = req.params.page;
+	console.log(req.params.page);
+	Post.paginate({}, { page: page, limit: 2 ,sort:{created_at:-1}}, function(err, result) {
+		if (err) return res.status(500).send(err);
+		return res.send(result);
+	});
+});	
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
  
